@@ -1,0 +1,67 @@
+import React, {useState, useEffect} from 'react'
+import {Button} from './Mystyle'
+import FindPW from './FindPW'
+import Axios from 'axios'
+
+
+
+
+
+const Userlogin =({history}) => {
+const url='/hello2'
+const [userid, setUserID]=useState("")
+const [userpw, setUserPW]=useState("")
+const [loginstatus, setLoginStatus]=useState("")
+
+Axios.defaults.withCredentials=true;
+
+useEffect(()=>{
+  Axios.get(url).then((response)=>{
+    if(response.data.LoggedIn===true){
+      setLoginStatus(response.data.user_id);
+    }
+    console.log(response);
+  });
+}, []);
+  
+
+
+ const submitLogin=(e)=>{
+  const url='/hello2'
+  e.preventDefault();
+  Axios.post(url, {
+    SenduserID : userid,
+    SenduserPW : userpw
+  })
+  .then((response)=>{
+    if(response.data.message){
+      setLoginStatus(response.data.message);
+    }
+    else{
+      setLoginStatus(response.data[0].user_id);
+      alert('로그인 성공');
+      history.push('/UserPage');
+    }
+  });
+  };
+
+ 
+
+return(
+      <header onSubmit={submitLogin}>
+        <h1>사용자 로그인</h1>
+       <form>
+         <h2>ID입력</h2>
+        <input value={userid} onChange={(e)=>{setUserID(e.target.value)}} name="id" type="text" placeholder="ID입력"/>
+        <h2>PW입력</h2>
+        <input value={userpw} onChange={(e)=>{setUserPW(e.target.value)}} name="pw" type="text" placeholder="PW입력"/>
+         <button type="submit">로그인</button>
+       </form>
+       <h1>{loginstatus}</h1>
+        </header>
+    
+    )
+  }
+
+
+export default Userlogin
