@@ -44,9 +44,9 @@ useEffect(()=>{
  
 
 return(
-      <header onSubmit={submitLogin}>
+      <header>
         <h1>관리자 로그인</h1>
-       <form>
+       <form onSubmit={submitLogin}>
          <h2>ID입력</h2>
         <input value={managerid} onChange={(e)=>{setManagerID(e.target.value)}} name="id" type="text" placeholder="ID입력"/>
 
