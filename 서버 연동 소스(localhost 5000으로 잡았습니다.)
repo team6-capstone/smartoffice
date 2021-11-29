@@ -118,7 +118,7 @@ app.post('/hello2', (req, res)=>{
     if(err){
       res.send({ err:err});
     }
-    if(result.length>0){
+    if(rows.length>0){
       req.session.user=result;
       res.send(result);
     }else{
@@ -202,7 +202,7 @@ app.delete('/hello4/:id', (req, res) => {
         if(err){
           res.send({ err:err});
         }
-        if(result.length>0){
+        if(rows.length>0){
           req.session.user=result;
           res.send(result);
         }else{
