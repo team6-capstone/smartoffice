@@ -1,5 +1,5 @@
 
-const express = require('express');
+const express = require('express'); 
 const bodyParser=require('body-parser');
 const app=express();
 const router = express();
@@ -44,7 +44,7 @@ app.use(
          expires : 60*60*24,
     },
   })
-);
+); //로그인 세션
 
 app.get('/hello', (req, res)=> {
   connection.query(
@@ -53,7 +53,7 @@ app.get('/hello', (req, res)=> {
        res.send(rows);
     }
   );
-});
+});  //관리자 - deleteperson 사원조회기능
 
 app.get('/api', (req, res)=>{
   connection.query(
@@ -62,7 +62,7 @@ app.get('/api', (req, res)=>{
       res.send(rows);
     }
 );
-});
+}); //관리자 층별현황 조회기능
 
 
 app.post('/hello', (req, res)=>{
@@ -83,7 +83,7 @@ app.post('/hello', (req, res)=>{
       res.send(rows);
       console.log(err);
     });
-});
+}); //관리자 사원등록기능
 
 app.delete('/hello/:id', (req, res) => {
   
@@ -94,7 +94,7 @@ app.delete('/hello/:id', (req, res) => {
        console.log(err);
      }
   )
-    });
+    });//관리자 deleteperson 사원삭제기능
 
 app.get('/hello2', (req, res)=>{
   if(req.session.user){
@@ -103,7 +103,7 @@ app.get('/hello2', (req, res)=>{
   }else{
     res.send({LoggedIn:false})
   }
-}
+} //userlogin 세션처리
 
 );
 
@@ -127,14 +127,14 @@ app.post('/hello2', (req, res)=>{
     }
   }
   );
-});
+});//userlogin
 
 
 app.post('/hello3', (req, res)=>{
    user=req.body.SendID;
    res.send(user);
    
-});
+});//userlogin-Reservation간 아이디 넘기기 id저장
 
 app.get('/hello3', (req, res)=>{
    connection.query("SELECT * FROM user WHERE id=(?)",
@@ -142,7 +142,7 @@ app.get('/hello3', (req, res)=>{
      res.send(rows);
      console.log(user);
    });
-});
+});//userlogin-Reservation간 아이디 넘기기 id꺼내기
 
 
 app.post('/hello4', (req, res)=>{
@@ -159,7 +159,7 @@ app.post('/hello4', (req, res)=>{
       console.log(err);
     }
 )
-})
+})//좌석예약
 
 
 
@@ -167,7 +167,7 @@ app.get('/hello4', (req, res)=>{
   connection.query("SELECT * FROM seat_log WHERE user = (?)", user, (err, rows, fields)=>{
     res.send(rows);
   });
-});
+});//예약정보삭제-조회기능
 
 app.delete('/hello4/:id', (req, res) => {
   
@@ -178,7 +178,7 @@ app.delete('/hello4/:id', (req, res) => {
        console.log(err);
      }
   )
-    });
+    });//얘약정보삭제
 
     app.get('/hello5', (req, res)=>{
       if(req.session.user){
@@ -189,7 +189,7 @@ app.delete('/hello4/:id', (req, res) => {
       }
     }
     
-    );
+    );//관리자로그인 세션처리
 
     app.post('/hello5', (req, res)=>{
       const manager_id=req.body.SendManagerID;
@@ -211,18 +211,18 @@ app.delete('/hello4/:id', (req, res) => {
         }
       }
       );
-    });
+    });//관리자로그인
   
     app.post('/hello6', (req, res)=>{
      user1=req.body.uname;
       res.send(user1);
-    });
+    });//사원찾기 아이디입력
 
     app.get('/hello6', (req, res)=>{
       connection.query(
         "SELECT * FROM seat_log WHERE user=(?)", user1,
         (err, rows, fields) =>{
-          res.send(rows);
+          res.send(rows);//사원찾기 사원정보꺼내오기
         }
     );
     });
