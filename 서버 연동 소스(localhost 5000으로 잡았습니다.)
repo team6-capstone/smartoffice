@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser=require('body-parser');
 const app=express();
@@ -9,8 +10,10 @@ const cors=require('cors');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-
+var user="";
+var user1="";
 const mysql=require('mysql');
+const { query } = require('express');
 
 
 const connection=mysql.createConnection({
@@ -110,7 +113,7 @@ app.post('/hello2', (req, res)=>{
   let params=[user_id, user_pw];
   connection.query("SELECT * FROM user WHERE id=(?) AND pw=(?)", 
   params,
-  (err, result) =>{
+  (err, rows, result) =>{
     
     if(err){
       res.send({ err:err});
@@ -125,5 +128,103 @@ app.post('/hello2', (req, res)=>{
   }
   );
 });
+
+
+app.post('/hello3', (req, res)=>{
+   user=req.body.SendID;
+   res.send(user);
+   
+});
+
+app.get('/hello3', (req, res)=>{
+   connection.query("SELECT * FROM user WHERE id=(?)",
+   user, (err, rows, result)=>{
+     res.send(rows);
+     console.log(user);
+   });
+});
+
+
+app.post('/hello4', (req, res)=>{
+  let user=req.body.uid;
+  let seatid=req.body.seat_id;
+  let date=req.body.date;
+  let starttime=req.body.start_time;
+  let endtime=req.body.end_time;
+  let params=[seatid, user, date, starttime, endtime];
+  connection.query(
+    "INSERT INTO seat_log VALUES (null, ?, ?, ?, ?, ?, 1)", params,
+    (err, rows, fields) =>{
+      res.send(rows);
+      console.log(err);
+    }
+)
+})
+
+
+
+app.get('/hello4', (req, res)=>{
+  connection.query("SELECT * FROM seat_log WHERE user = (?)", user, (err, rows, fields)=>{
+    res.send(rows);
+  });
+});
+
+app.delete('/hello4/:id', (req, res) => {
   
+  let params=[req.params.id];
+  connection.query("DELETE FROM seat_log WHERE id = (?)", params,
+     (err, rows, fields) => {
+       res.send(rows);
+       console.log(err);
+     }
+  )
+    });
+
+    app.get('/hello5', (req, res)=>{
+      if(req.session.user){
+        res.send({LoggedIn : true, user : req.session.user})
+        console.log(req.session.user);
+      }else{
+        res.send({LoggedIn:false})
+      }
+    }
+    
+    );
+
+    app.post('/hello5', (req, res)=>{
+      const manager_id=req.body.SendManagerID;
+      const manager_pw=req.body.SendManagerPW;
+      let params=[manager_id, manager_pw];
+      connection.query("SELECT * FROM manager WHERE id=(?) AND pw=(?)", 
+      params,
+      (err, rows, result) =>{
+        
+        if(err){
+          res.send({ err:err});
+        }
+        if(result.length>0){
+          req.session.user=result;
+          res.send(result);
+        }else{
+          
+          res.send({message:"로그인 실패"});
+        }
+      }
+      );
+    });
+  
+    app.post('/hello6', (req, res)=>{
+     user1=req.body.uname;
+      res.send(user1);
+    });
+
+    app.get('/hello6', (req, res)=>{
+      connection.query(
+        "SELECT * FROM seat_log WHERE user=(?)", user1,
+        (err, rows, fields) =>{
+          res.send(rows);
+        }
+    );
+    });
+
 app.listen(port, () => console.log(`Listen on port ${port}`));
