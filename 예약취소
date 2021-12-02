@@ -1,0 +1,47 @@
+import React, {Component, useState} from 'react'
+import Cancel from './cancel';
+import { Button } from './Mystyle'
+
+class CancelReservation extends Component{
+  handleGoBack=()=>{
+    this.props.history.goBack();
+  }
+  handleGoHome=()=>{
+    this.props.history.push("/UserPage");
+  }
+  state = {
+    customers: ""
+  }
+  componentDidMount(){
+    this.callApi()
+     .then(res=>this.setState({customers: res}))
+     .catch(err=>console.log(err));
+  }
+  callApi=async () =>{
+    const response=await fetch('/hello4');
+    const body=await response.json();
+    return body;
+  }
+  render(){
+  
+  return <div>
+      <h1 style={{textAlign:'center'}}>예약 취소</h1>
+      <h2 style={{textAlign:'center'}}>예약 목록</h2>
+      <ul style={{ listStyleType: "none", padding: 0 }}>
+    {this.state.customers ? this.state.customers.map(cm => {
+      return <li style={{textAlign:'center'}}>
+        <span>{cm.id}. 좌석번호 : {cm.seat_id} 사용자 : {cm.user} 일자 : {cm.date} 시작시간 : {cm.start_time} 종료시간 : {cm.end_time} <Cancel id={cm.id}/></span>
+      </li>
+    }) : ""}
+  </ul>
+     <div style={{textAlign:'center'}}>
+      <Button onClick={this.handleGoBack}>Back</Button>
+      <Button onClick={this.handleGoHome}>Home</Button>
+      </div>
+
+  </div>
+}
+}
+ 
+
+export default CancelReservation

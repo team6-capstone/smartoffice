@@ -1,0 +1,78 @@
+import React, { useState, useEffect } from 'react';
+import { post } from 'axios';
+import {Button} from './Mystyle'
+
+class Registerperson extends React.Component{
+    constructor(props){
+      super(props);
+      this.state={
+        name: '',
+        id : '',
+        pw : '',
+        email : '',
+        department : '',
+        rank : '',
+        phone : '',
+        state : '',
+      }
+    }
+
+    handleFormSubmit =(e)=>{
+      e.preventDefault()
+      this.addCustomer()
+          this.setState({
+            name: '',
+            id : '',
+            pw : '',
+            email : '',
+            department : '',
+            rank : '',
+            phone : '',
+            state : ''
+          })
+          window.location.reload();
+    }
+
+    handleValueChange=(e)=>{
+      let nextState={};
+      nextState[e.target.name]=e.target.value;
+      this.setState(nextState);
+    }
+
+    addCustomer = () =>{
+      const url = '/api/hello';
+      const formData=new URLSearchParams();
+      formData.append('name', this.state.name);
+      formData.append('id', this.state.id);
+      formData.append('pw', this.state.pw);
+      formData.append('email', this.state.email);
+      formData.append('department', this.state.department);
+      formData.append('rank', this.state.rank);
+      formData.append('phone', this.state.phone);
+      formData.append('state', this.state.state);
+      const config ={
+        headers: {
+          'context-type' : 'multipart/form-data'
+        }
+      }
+      return post(url, formData, config);
+    }
+    render(){
+      return(
+        <form onSubmit={this.handleFormSubmit}>
+          <h1>사원 추가</h1>
+           이름 : <input type="text" name="name" value={this.state.name} onChange={this.handleValueChange}/><br/>
+           id : <input type="text" name="id" value={this.state.id} onChange={this.handleValueChange}/><br/>
+           pw : <input type="text" name="pw" value={this.state.pw} onChange={this.handleValueChange}/><br/>
+           email : <input type="text" name="email" value={this.state.email} onChange={this.handleValueChange}/><br/>
+           department : <input type="text" name="department" value={this.state.department} onChange={this.handleValueChange}/><br/>
+           rank : <input type="text" name="rank" value={this.state.rank} onChange={this.handleValueChange}/><br/>
+           phone : <input type="text" name="phone" value={this.state.phone} onChange={this.handleValueChange}/><br/>
+           state : <input type="text" name="state" value={this.state.state} onChange={this.handleValueChange}/><br/>
+           <Button type="submit">등록</Button>
+        </form>
+      )
+    }
+}
+
+export default Registerperson;

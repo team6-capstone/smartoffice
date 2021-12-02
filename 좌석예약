@@ -1,0 +1,107 @@
+import React, {useState} from 'react'
+import { useHistory } from 'react-router-dom'
+import {Button} from './Mystyle'
+import Axios, {post} from 'axios'
+import Userlogin from './userlogin'
+class Reservation extends React.Component{
+  handleGoBack=()=>{
+    this.props.history.goBack();
+  }
+  handleGoHome=()=>{
+    this.props.history.push("/UserPage");
+  }
+  constructor(props){
+    super(props);
+    this.state={
+      uid : "",
+      userid : "",
+      seat_id : "",
+      date : "",
+      start_time: "",
+      end_time : ""
+    }
+  }
+
+  
+  handleFormSubmit(){
+    this.addReservate()
+        this.setState({
+        seat_id : "",
+         date : "",
+         start_time: "",
+          end_time : ""
+        })
+  }
+
+  handleFormStatus=(e)=>{
+    e.preventDefault();
+    if(this.state.userid===""){
+      alert('아이디를 확인하세요');
+    }
+    else{
+      alert('예약 성공');
+      this.handleFormSubmit();
+    }
+  }
+
+  handleValueChange=(e)=>{
+    let nextState={};
+    nextState[e.target.name]=e.target.value;
+    this.setState(nextState);
+  }
+  
+componentDidMount(){
+    this.callApi()
+     .then(res=>this.setState({uid : res}))
+     .catch(err=>console.log(err));
+  }
+  callApi=async () =>{
+    const response=await fetch('/hello3');
+    const body=await response.json();
+    return body;
+  }
+
+  addReservate = () =>{
+    const url = '/hello4';
+    const formData=new URLSearchParams();
+    formData.append('uid', this.state.userid);
+    formData.append('seat_id', this.state.seat_id);
+    formData.append('date', this.state.date);
+    formData.append('start_time', this.state.start_time);
+    formData.append('end_time', this.state.end_time);
+    const config ={
+      headers: {
+        'context-type' : 'multipart/form-data'
+      }
+    }
+    return post(url, formData, config);
+  }
+  render(){
+    return(
+      <header>
+        <h1>좌석 예약</h1>
+        {this.state.uid ? this.state.uid.map(cm => {
+           return <div><span>id : {cm.id}
+           <button onClick={(e)=>this.setState({userid : cm.id})}>확인</button></span>
+           </div>
+                 }) : ""}
+        <form>
+        
+         좌석번호 : <input type="text" name="seat_id" value={this.state.seat_id} onChange={this.handleValueChange}/><br/>
+         날짜 : <input type="text" name="date" value={this.state.date} onChange={this.handleValueChange}/><br/>
+         시작시간 : <input type="text" name="start_time" value={this.state.start_time} onChange={this.handleValueChange}/><br/>
+         종료시간 : <input type="text" name="end_time" value={this.state.end_time} onChange={this.handleValueChange}/><br/>
+         <Button onClick={this.handleFormStatus} >예약</Button>
+      </form>
+      <div style={{textAlign:'center'}}>
+        <Button onClick={this.handleGoBack}>Back</Button>
+        <Button onClick={this.handleGoHome}>Home</Button>
+        </div>
+      
+      </header>
+    )
+  }
+}
+
+
+export default Reservation;

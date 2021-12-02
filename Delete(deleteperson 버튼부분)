@@ -1,0 +1,18 @@
+import React from 'react'
+class Delete extends React.Component{
+    deleteClient(id){
+        const url='/api/hello/'+id;
+        fetch(url,{
+             method: 'DELETE'
+        });
+        window.location.reload();
+    }
+    render(){
+        return(
+            <button onClick={(e)=>{this.deleteClient(this.props.id)}}>삭제</button>
+        )
+    }
+
+}
+
+export default Delete;

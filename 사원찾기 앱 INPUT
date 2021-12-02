@@ -1,0 +1,61 @@
+import React, {Component} from 'react';
+import { TextInput, StyleSheet, KeyboardAvoidingView, Button, TouchableOpacity, Text } from 'react-native';
+
+const style=StyleSheet.create({
+  submitButton:{
+    padding : 10,
+    margin : 15,
+    height : 40,
+    backgroundColor : 'blue',
+    },
+    submitText : {
+      textAlign : 'center',
+      textAlignVertical : 'center',
+      color:'white',
+      fontWeight: 'bold',
+    },
+    TextInput:{
+       margin: 10,
+       height: 40,
+       borderBottomColor : 'blue',
+       borderBottomWidth : 1,
+    },
+});
+
+
+class SearchInput extends Component{
+constructor(props){
+  super(props);
+  this.state={
+    userid : '',
+  };
+}
+
+handleUserID=(userid)=>{
+  this.setState({userid:userid});
+};
+
+handleSearch=()=>{
+  alert(`id:${this.state.userid}`);
+}
+
+render(){
+  return(
+    <KeyboardAvoidingView behavior="padding" enabled>
+      <TextInput
+        style={style.TextInput}
+        placeholder={'사원 id 입력'}
+        value={this.state.userid}
+        onChangeText={this.handleSearch}
+        />
+        <TouchableOpacity style={style.submitButton} onPress={this.handleSearch}>
+          <Text children={'검색'} style={style.submitText}/>
+        </TouchableOpacity>
+    </KeyboardAvoidingView>
+  );
+}
+
+}
+
+
+export default SearchInput;

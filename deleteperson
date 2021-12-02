@@ -1,0 +1,47 @@
+import React, {Component, useState} from 'react'
+import { Button } from './Mystyle'
+import Delete from './delete'
+
+class Deleteperson extends Component{
+    handleGoBack=()=>{
+      this.props.history.goBack();
+    }
+    handleGoHome=()=>{
+      this.props.history.push("/");
+    }
+    state = {
+      customers: ""
+    }
+    componentDidMount(){
+      this.callApi()
+       .then(res=>this.setState({customers: res}))
+       .catch(err=>console.log(err));
+    }
+    callApi=async () =>{
+      const response=await fetch('/api/hello');
+      const body=await response.json();
+      return body;
+    }
+    render(){
+    
+    return <div>
+        <h1 style={{textAlign:'center'}}>사원 삭제</h1>
+        <h2 style={{textAlign:'center'}}>사원 목록</h2>
+        <ul style={{ listStyleType: "none", padding: 0 }}>
+      {this.state.customers ? this.state.customers.map(cm => {
+        return <li style={{textAlign:'center'}}>
+          <span>이름 : {cm.name} id : {cm.id} pw : {cm.pw} email : {cm.email} 부서 : {cm.department} 직급 : {cm.rank} 핸드폰 : {cm.phone} <Delete id={cm.id}/></span>
+        </li>
+      }) : ""}
+    </ul>
+       <div style={{textAlign:'center'}}>
+        <Button onClick={this.handleGoBack}>Back</Button>
+        <Button onClick={this.handleGoHome}>Home</Button>
+        </div>
+  
+    </div>
+  }
+}
+   
+
+export default Deleteperson

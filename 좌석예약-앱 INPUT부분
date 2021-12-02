@@ -1,0 +1,94 @@
+import React, {Component} from 'react';
+import { TextInput, StyleSheet, KeyboardAvoidingView, Button, TouchableOpacity, Text } from 'react-native';
+
+const style=StyleSheet.create({
+  submitButton:{
+    padding : 10,
+    margin : 15,
+    height : 40,
+    backgroundColor : 'blue',
+    },
+    submitText : {
+      textAlign : 'center',
+      textAlignVertical : 'center',
+      color:'white',
+      fontWeight: 'bold',
+    },
+    TextInput:{
+       margin: 10,
+       height: 40,
+       borderBottomColor : 'blue',
+       borderBottomWidth : 1,
+    },
+});
+
+
+class MyRes extends Component{
+constructor(props){
+  super(props);
+  this.state={
+    seatid : '',
+    date : '',
+    starttime : '',
+    endtime : ''
+  };
+}
+
+handleSeatID=(seatid)=>{
+  this.setState({seatid:seatid});
+};
+
+handleDate=(date)=>{
+  this.setState({date:date});
+}
+handleStarttime=(starttime)=>{
+    this.setState({starttime:starttime});
+  }
+  handleEndtime=(endtime)=>{
+    this.setState({endtime:endtime});
+  }
+
+handleReservate=()=>{
+  alert(`좌석번호:${this.state.seatid} 날짜:${this.state.date} 시작시간:${this.state.starttime} 종료시간 : ${this.state.endtime}`);
+}
+
+render(){
+  return(
+    <KeyboardAvoidingView behavior="padding" enabled>
+      <TextInput
+        style={style.TextInput}
+        placeholder={'좌석번호'}
+        value={this.state.seatid}
+        onChangeText={this.handleSeatID}
+        />
+      <TextInput
+        style={style.TextInput}
+        placeholder={'날짜'}
+        value={this.state.date}
+        onChangeText={this.handleDate}
+        />
+      <TextInput
+        style={style.TextInput}
+        placeholder={'시작시간'}
+        value={this.state.starttime}
+        onChangeText={this.handleStarttime}
+        secureTextEntry
+        />
+        <TextInput
+        style={style.TextInput}
+        placeholder={'종료시간'}
+        value={this.state.endtime}
+        onChangeText={this.handleEndtime}
+        secureTextEntry
+        />
+        <TouchableOpacity style={style.submitButton} onPress={this.handleReservate}>
+          <Text children={'예약'} style={style.submitText}/>
+        </TouchableOpacity>
+    </KeyboardAvoidingView>
+  );
+}
+
+}
+
+
+export default MyRes;
