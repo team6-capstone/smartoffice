@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://sjuteam6.cafe24.com:3306/sjuteam6?verifyServerCertificate=false&useSSL=false
+    username: sjuteam6
+    password: sejongteam6
