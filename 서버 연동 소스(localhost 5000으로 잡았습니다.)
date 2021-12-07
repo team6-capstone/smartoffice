@@ -1,17 +1,27 @@
-
-const express = require('express'); 
+const express = require('express');
 const bodyParser=require('body-parser');
 const app=express();
 const router = express();
-const port=process.env.PORT || 5000;
-const session=require('express-session');
-const cookieparser = require("cookie-parser");
-const cors=require('cors');
+const port=8001;
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
+app.use(express.static(__dirname+'/client/build'));
+
+app.get('/', function(req, res){
+   res.sendFile(__dirname+'/client/build/index.html');
+});
+
 var user="";
 var user1="";
+var user2="";
+var user2email="";
+var seatid="";
+var date="";
+var starttime="";
+var endtime="";
+var userlid="";
 const mysql=require('mysql');
 const { query } = require('express');
 
@@ -26,25 +36,6 @@ const connection=mysql.createConnection({
 connection.connect();
 
 
-app.use(cors({
-  origin:["http://localhost:3000"],
-  methods : ["GET", "POST"],
-  credentials : true
-}));
-
-app.use(cookieparser());
-
-app.use(
-  session({
-    key : "userid",
-    secret : "keyboardcat",
-    resave : false,
-    saveUninitialized : false,
-    cookie :{
-         expires : 60*60*24,
-    },
-  })
-); //로그인 세션
 
 app.get('/hello', (req, res)=> {
   connection.query(
@@ -53,7 +44,7 @@ app.get('/hello', (req, res)=> {
        res.send(rows);
     }
   );
-});  //관리자 - deleteperson 사원조회기능
+});
 
 app.get('/api', (req, res)=>{
   connection.query(
@@ -62,7 +53,7 @@ app.get('/api', (req, res)=>{
       res.send(rows);
     }
 );
-}); //관리자 층별현황 조회기능
+});
 
 
 app.post('/hello', (req, res)=>{
@@ -83,7 +74,7 @@ app.post('/hello', (req, res)=>{
       res.send(rows);
       console.log(err);
     });
-}); //관리자 사원등록기능
+});
 
 app.delete('/hello/:id', (req, res) => {
   
@@ -94,18 +85,8 @@ app.delete('/hello/:id', (req, res) => {
        console.log(err);
      }
   )
-    });//관리자 deleteperson 사원삭제기능
+    });
 
-app.get('/hello2', (req, res)=>{
-  if(req.session.user){
-    res.send({LoggedIn : true, user : req.session.user})
-    console.log(req.session.user);
-  }else{
-    res.send({LoggedIn:false})
-  }
-} //userlogin 세션처리
-
-);
 
 app.post('/hello2', (req, res)=>{
   const user_id=req.body.SenduserID;
@@ -114,27 +95,26 @@ app.post('/hello2', (req, res)=>{
   connection.query("SELECT * FROM user WHERE id=(?) AND pw=(?)", 
   params,
   (err, rows, result) =>{
-    
     if(err){
       res.send({ err:err});
     }
     if(rows.length>0){
-      req.session.user=result;
       res.send(result);
+      userlid=user_id;
     }else{
       
       res.send({message:"로그인 실패"});
     }
   }
   );
-});//userlogin
+});
 
 
 app.post('/hello3', (req, res)=>{
    user=req.body.SendID;
    res.send(user);
    
-});//userlogin-Reservation간 아이디 넘기기 id저장
+});
 
 app.get('/hello3', (req, res)=>{
    connection.query("SELECT * FROM user WHERE id=(?)",
@@ -142,24 +122,46 @@ app.get('/hello3', (req, res)=>{
      res.send(rows);
      console.log(user);
    });
-});//userlogin-Reservation간 아이디 넘기기 id꺼내기
+});
 
+app.post('/hello8', (req,res)=>{
+  seatid=req.body.seat_id;
+  date=req.body.date;
+  starttime=req.body.start_time;
+  endtime=req.body.end_time;
+  res.send(seatid);
+ })
 
+app.get('/hello8', (req,res)=>{
+  let params=[date, seatid];
+  connection.query(
+  "SELECT * FROM seat_log WHERE date=(?) AND seat_id=(?) AND return = 2",
+  params, (err, rows, result)=>{
+    if(rows.length>0){
+      res.send({message:"해당 좌석은 예약되었습니다."});
+      console.log(err);
+    }
+    else{
+      res.send(result);
+      console.log(err);
+    }
+  }
+)
+})
 app.post('/hello4', (req, res)=>{
-  let user=req.body.uid;
   let seatid=req.body.seat_id;
   let date=req.body.date;
   let starttime=req.body.start_time;
   let endtime=req.body.end_time;
-  let params=[seatid, user, date, starttime, endtime];
+  let params=[seatid, userlid, date, starttime, endtime];
   connection.query(
-    "INSERT INTO seat_log VALUES (null, ?, ?, ?, ?, ?, 1)", params,
+    "INSERT INTO seat_log VALUES (null, ?, ?, ?, ?, ?, 2)", params,
     (err, rows, fields) =>{
       res.send(rows);
       console.log(err);
     }
 )
-})//좌석예약
+})
 
 
 
@@ -167,7 +169,7 @@ app.get('/hello4', (req, res)=>{
   connection.query("SELECT * FROM seat_log WHERE user = (?)", user, (err, rows, fields)=>{
     res.send(rows);
   });
-});//예약정보삭제-조회기능
+});
 
 app.delete('/hello4/:id', (req, res) => {
   
@@ -178,18 +180,8 @@ app.delete('/hello4/:id', (req, res) => {
        console.log(err);
      }
   )
-    });//얘약정보삭제
+    });
 
-    app.get('/hello5', (req, res)=>{
-      if(req.session.user){
-        res.send({LoggedIn : true, user : req.session.user})
-        console.log(req.session.user);
-      }else{
-        res.send({LoggedIn:false})
-      }
-    }
-    
-    );//관리자로그인 세션처리
 
     app.post('/hello5', (req, res)=>{
       const manager_id=req.body.SendManagerID;
@@ -203,7 +195,6 @@ app.delete('/hello4/:id', (req, res) => {
           res.send({ err:err});
         }
         if(rows.length>0){
-          req.session.user=result;
           res.send(result);
         }else{
           
@@ -211,20 +202,99 @@ app.delete('/hello4/:id', (req, res) => {
         }
       }
       );
-    });//관리자로그인
+    });
   
     app.post('/hello6', (req, res)=>{
      user1=req.body.uname;
       res.send(user1);
-    });//사원찾기 아이디입력
+    });
 
     app.get('/hello6', (req, res)=>{
       connection.query(
         "SELECT * FROM seat_log WHERE user=(?)", user1,
         (err, rows, fields) =>{
-          res.send(rows);//사원찾기 사원정보꺼내오기
+          res.send(rows);
         }
     );
     });
 
+    app.post('/hello7', (req, res)=>{
+      user2=req.body.Senduid;
+      user2email=req.body.SendEmail;
+      res.send(user2);
+    });
+
+    app.get('/hello7', (req, res)=>{
+      let params=[user2, user2email]
+      connection.query("SELECT * FROM user WHERE id=(?) AND email=(?)",
+      params, (err, rows, result)=>{
+        res.send(rows);
+      });
+   });
+
+   app.get('/hello10', (req, res)=> {
+    connection.query(
+      "SELECT * FROM seat",
+      (err, rows, fields) => {
+         res.send(rows);
+      }
+    );
+  });
+
+  app.post('/hello9', (req,res)=>{
+    let floor=req.body.floor;
+    let seatlid=req.body.seatlid;
+    let statuslid=req.body.statuslid;
+    let params=[statuslid, floor, seatlid];
+    connection.query("UPDATE seat SET statement=? WHERE floor=? AND id=?", 
+    params, (err, rows, result)=>{
+      res.send(rows);
+    })
+
+  })
+
+  app.get('/hello11', (req, res)=>{
+    connection.query(
+      "SELECT * FROM user",
+      (err, rows, fields)=>{
+        res.send(rows);
+      }
+    )
+  })
+  app.post('/hello12', (req,res)=>{
+    let uid=req.body.uid;
+    let upw=req.body.upw;
+    let udepart=req.body.udepart;
+    let uemail=req.body.uemail;
+    let uphone=req.body.uphone;
+    let urank=req.body.urank;
+    let params=[upw, udepart, urank, uemail, uphone, uid];
+    connection.query("UPDATE user SET pw= ?, department= ?, rank= ?, email= ?, phone= ? WHERE id= ?", 
+    params, (err, rows, result)=>{
+      res.send(rows);
+    })
+
+  })  
+
+  app.get('/hello13', (req, res)=>{
+    connection.query(
+      "SELECT * FROM user WHERE id= ?", 
+      userlid,
+      (err, rows, fields)=>{
+        res.send(rows);
+      }
+    )
+  })
+
+  app.post('/hello14', (req,res)=>{
+    let upw=req.body.upw;
+    let uemail=req.body.uemail;
+    let uphone=req.body.uphone;
+    let params=[upw, uemail, uphone, userlid];
+    connection.query("UPDATE user SET pw= ?, email= ?, phone= ? WHERE id= ?", 
+    params, (err, rows, result)=>{
+      res.send(rows);
+    })
+
+  })  
 app.listen(port, () => console.log(`Listen on port ${port}`));
