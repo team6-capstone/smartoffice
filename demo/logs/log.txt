@@ -6097,3 +6097,49 @@ Caused by: java.sql.SQLException: null,  message from server: "Host '121.130.61.
 [INFO ] 17:34:54.384 o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
 [INFO ] 17:34:54.393 com.example.demo.DemoApplication - Started DemoApplication in 0.988 seconds (JVM running for 3193.746)
 [INFO ] 17:34:54.395 o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+[INFO ] 17:49:30.937 com.example.demo.DemoApplication - Starting DemoApplication using Java 17 on DESKTOP-BJUH668 with PID 16500 (C:\Users\any98\Documents\workspace-spring-tool-suite-4-4.12.1.RELEASE\demo\bin\main started by any98 in C:\Users\any98\Documents\workspace-spring-tool-suite-4-4.12.1.RELEASE\demo)
+[INFO ] 17:49:30.940 com.example.demo.DemoApplication - No active profile set, falling back to default profiles: default
+[INFO ] 17:49:31.587 o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[INFO ] 17:49:31.588 o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[INFO ] 17:49:32.542 o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+[INFO ] 17:49:32.568 o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 0 JDBC repository interfaces.
+[INFO ] 17:49:33.478 o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+[INFO ] 17:49:33.503 o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+[INFO ] 17:49:33.504 o.a.catalina.core.StandardService - Starting service [Tomcat]
+[INFO ] 17:49:33.505 o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.55]
+[INFO ] 17:49:33.629 o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+[INFO ] 17:49:33.630 o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2041 ms
+[INFO ] 17:49:34.374 com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+[INFO ] 17:49:35.783 com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+[WARN ] 17:49:35.847 o.s.data.convert.CustomConversions - Registering converter from class java.time.OffsetDateTime to class org.springframework.data.jdbc.core.convert.JdbcValue as writing converter although it doesn't convert to a store-supported type! You might want to check your annotation setup at the converter implementation.
+[INFO ] 17:49:36.129 o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+[INFO ] 17:49:36.172 o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+[INFO ] 17:49:36.293 o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+[INFO ] 17:49:36.339 com.example.demo.DemoApplication - Started DemoApplication in 6.353 seconds (JVM running for 8.35)
+[INFO ] 17:49:37.744 o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[INFO ] 17:49:37.745 o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+[INFO ] 17:49:37.746 o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+[ERROR] 17:49:52.884 c.e.d.i.c.UserManageController - org.springframework.jdbc.BadSqlGrammarException: PreparedStatementCallback; bad SQL grammar [UPDATE user SET department = ?, rank = ?, name = ?, phone = ?, email = ?, pw = ?, statement = : statement WHERE 1=1 AND id = ?]; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ': statement WHERE 1=1 AND id = 'ij'' at line 1
+[INFO ] 17:51:37.494 com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+[INFO ] 17:51:37.510 com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+[INFO ] 17:51:37.661 com.example.demo.DemoApplication - Starting DemoApplication using Java 17 on DESKTOP-BJUH668 with PID 16500 (C:\Users\any98\Documents\workspace-spring-tool-suite-4-4.12.1.RELEASE\demo\bin\main started by any98 in C:\Users\any98\Documents\workspace-spring-tool-suite-4-4.12.1.RELEASE\demo)
+[INFO ] 17:51:37.662 com.example.demo.DemoApplication - No active profile set, falling back to default profiles: default
+[INFO ] 17:51:37.933 o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JDBC repositories in DEFAULT mode.
+[INFO ] 17:51:37.940 o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 6 ms. Found 0 JDBC repository interfaces.
+[INFO ] 17:51:38.076 o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+[INFO ] 17:51:38.078 o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+[INFO ] 17:51:38.078 o.a.catalina.core.StandardService - Starting service [Tomcat]
+[INFO ] 17:51:38.078 o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.55]
+[INFO ] 17:51:38.165 o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+[INFO ] 17:51:38.165 o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 500 ms
+[INFO ] 17:51:38.440 com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+[INFO ] 17:51:38.546 com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+[WARN ] 17:51:38.548 o.s.data.convert.CustomConversions - Registering converter from class java.time.OffsetDateTime to class org.springframework.data.jdbc.core.convert.JdbcValue as writing converter although it doesn't convert to a store-supported type! You might want to check your annotation setup at the converter implementation.
+[INFO ] 17:51:38.582 o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+[INFO ] 17:51:38.595 o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+[INFO ] 17:51:38.599 o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+[INFO ] 17:51:38.609 com.example.demo.DemoApplication - Started DemoApplication in 1.011 seconds (JVM running for 130.619)
+[INFO ] 17:51:38.611 o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+[INFO ] 17:51:38.842 o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[INFO ] 17:51:38.842 o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+[INFO ] 17:51:38.843 o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms

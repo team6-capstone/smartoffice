@@ -45,6 +45,11 @@ public class UserService {
 		return this.userRepository.insert(user);
 	}
 	
+	public int updateById(User user) {
+		log.debug("user id = {}", user.getId());
+		return userRepository.updateById(user);
+	}
+	
 	public int deleteById(String id) {
 		log.debug("user id = {}", id);
 		return userRepository.deleteById(id);

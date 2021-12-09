@@ -59,6 +59,20 @@ public class UserManageController {
 		}
 	}
 	
+	@PostMapping(value="userEdit")
+	public ResponseEntity<String> userEdit(@RequestBody User user) {
+		try {
+			log.debug("user = {}", user.toString());
+			int updatedCnt = userService.updateById(user);
+			return new ResponseEntity<>(String.format("%d updated", updatedCnt), HttpStatus.OK);
+		}
+		catch(Exception e) {
+			log.error(e.toString());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	// user ªË¡¶
 	@ResponseBody
 	@PostMapping(value="userDelete")
 	public ResponseEntity<String> userDelete(@RequestParam(value="id") String id) {
