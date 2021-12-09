@@ -28,6 +28,7 @@ public class UserController {
 		this.userService = userService;
 	}
 	
+	// 테스트용 사용x
 	@GetMapping("userInfo")
 	public User userInfo( ) {
 		log.debug("/userInfo start");
@@ -35,29 +36,11 @@ public class UserController {
 		return user;
 	}
 	
-	@GetMapping("userList")
-	public Object userList() {
-		log.debug("/userList start");
-		List<User> userList = userService.getUserList();
-		return userList;
-	}
-	
-	@GetMapping("userListByCode/{department}/{statement}")
-	public Object userByCode(@PathVariable("department") String depCode, @PathVariable("statement") int stat) {
+	// 옵션별 user 검색
+	@GetMapping("userListByOption/{department}/{statement}")
+	public Object userByOption(@PathVariable("department") String depCode, @PathVariable("statement") int stat) {
 		log.debug("depCode = {}, statatement = {}", depCode, stat);
-		List<User> userList = userService.findUserByDepANDStat(depCode, stat);
+		List<User> userList = userService.findUserByOption(depCode, stat);
 		return userList;
-	}
-	
-	@PostMapping(value="userAdd")
-	public ResponseEntity<User> userAdd(@RequestBody User user) {
-		try {
-			log.debug("user = {}", user.toString());
-			return new ResponseEntity<>(userService.insert(user), HttpStatus.OK);
-		}
-		catch (Exception e) {
-			log.error(e.toString());
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
 	}
 }

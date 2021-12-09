@@ -1,6 +1,14 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://sjuteam6.cafe24.com:3306/sjuteam6?verifyServerCertificate=false&useSSL=false
+    url: jdbc:mysql://sjuteam6.cafe24.com:3306/sjuteam6?serverTimeZone=UTC&CharacterEncoding=UTF-8&verifyServerCertificate=false&useSSL=false
     username: sjuteam6
     password: sejongteam6
+    hikari:
+      maximum-pool-size: 10
+      connection-timeout: 5000
+      connection-init-sql: SELECT 1
+      validation-timeout: 2000
+      minimum-idle: 10      # 연결 pool에서 HikariCP가 유지 관리하는 최소 유휴 연결 수
+      idle-timeout: 600000  # 연결을 위한 최대 유휴 시간
+      max-lifetime: 1800000 # 닫힌 후 pool에 있는 connection의 최대 수명(ms)

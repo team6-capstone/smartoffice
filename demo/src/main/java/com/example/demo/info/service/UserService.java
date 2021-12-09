@@ -36,12 +36,17 @@ public class UserService {
 		return this.userRepository.findUser();
 	}
 	
-	public List<User> findUserByDepANDStat(String depCode, int stat) {
+	public List<User> findUserByOption(String depCode, int stat) {
 		log.debug("depCode = {}, statement = {}", depCode, stat);
-		return this.userRepository.findByCountryCodeAndStat(depCode, stat);
+		return this.userRepository.findByOption(depCode, stat);
 	}
 	
 	public User insert(User user) {
 		return this.userRepository.insert(user);
+	}
+	
+	public int deleteById(String id) {
+		log.debug("user id = {}", id);
+		return userRepository.deleteById(id);
 	}
 }
